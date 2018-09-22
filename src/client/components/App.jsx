@@ -7,7 +7,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      liveStatus: false,
+      stream: null,
     };
   }
 
@@ -16,23 +16,22 @@ class App extends Component {
       .then(data => {
         return data.json();
       })
-      .then(data => {
-        console.log(data.liveStatus);
+      .then(response => {
         this.setState({
-          liveStatus : data.liveStatus
-        })
+          stream: response.stream,
+        });
       });
   }
 
   render() {
-    const { liveStatus } = this.state;
-    const videoSrc = liveStatus ? '' : 'guitar-solo.mp4';
+
+    const { stream } = this.state;
 
     return (
       <main className="App" >
         <h1>Chris' RTMP Player</h1>
         <video id="player" className="video-js" controls preload="auto" poster="livestream.jpg" data-setup="{}">
-          <source id='video' src={videoSrc} type='video/mp4' />
+          <source id='video' src={stream} type='video/mp4' />
           <p className="vjs-no-js">
             <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
           </p>

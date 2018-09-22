@@ -2,11 +2,14 @@ const express = require('express');
 const path = require('path');
 const fetch = require('node-fetch');
 const crypto = require('crypto');
+const bodyParser = require('body-parser');
 
 // Initialize our server
 const app = express();
 const port = 3000;
 app.use(express.static(path.join(__dirname, './../../')));
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const server = app.listen(port, () => {
   console.log(`Server started on port ${port}`);
 });
@@ -16,38 +19,53 @@ const API_SECRET = 'HTuRddLgDjCZcnJdo0kvpYY9HOX9RCFA';
 const clientId = 8143;
 const timestamp = (new Date()).getTime();
 const apiToken = generateToken('readonly', timestamp);
+const offlineClip = 'guitar-solo.mp4';
 
 // Setup our routes
 app.get('/live', (request, response) => {
-  const isLive = getLivestream(apiToken);
-  const liveResponse = {
-    liveStatus: isLive,
-  };
-  // getLivestream()
-  //   .then(data => {
-
-  //   })
-  //   .catch(error => {
-  //     response.json({ error: 'We hit an error from livestream api'});
-  //   });
-  // const liveResponse = { value: 'hey chris' };
-  response.json(liveResponse);
+  getLivestreamStatus(apiToken)
+    .then((data) => {
+      const parsedData = JSON.parse(data);
+      const { isLive } = parsedData;
+      const stream = isLive ? `https://livestreamapis.com/v3/accounts/12963240/events/5037587/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}` : offlineClip;
+      console.log(`https://livestreamapis.com/v3/accounts/12963240/events/5037587/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`)
+      response.json({
+        liveStatus: isLive,
+        stream,
+      });
+    });
 });
 
+// Calls livestream API to get .m3u
+function getLiveStreamClip(livestreamToken) {
+  const getReq = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const livestream = `https://livestreamapis.com/v3/accounts/12963240/events/5037587/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
+  console.log(livestream)
+  return fetch(livestream, getReq)
+}
+
 // Calls livestream API to get event status
-async function getLivestream(livestreamToken) {
+function getLivestreamStatus(livestreamToken) {
   const getReq = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
   const livestreamEvent = `https://livestreamapis.com/v3/accounts/12963240/events/5037587?clientId=${clientId}&token=${livestreamToken}&timestamp=${timestamp}`;
-  const res = await fetch(livestreamEvent, getReq);
-  console.log(res.json());
-  const json = res.json();
-  const { isLive } = json;
-  // console.log(isLive);
-  return isLive;
+  return fetch(livestreamEvent, getReq)
+    .then((data) => {
+      return data.text();
+    })
+    .then((textResponse) => {
+      return textResponse;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 // Calls livestream API
