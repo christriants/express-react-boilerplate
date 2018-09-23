@@ -1,8 +1,9 @@
 const ffmpeg = require('fluent-ffmpeg')
-const stream = ffmpeg('./guitar-solo.mp4')
+;
+const stream = ffmpeg('');
 
 function goLive(rtmpKey) {
-  return new Promise(function (resolve, reject) {
+  return new Promise(((resolve, reject) => {
     stream
       .on('start', function () {
         console.log('Attempting to stream...')
@@ -14,8 +15,7 @@ function goLive(rtmpKey) {
       .on('error', reject)
       .on('end', resolve)
       .save(`rtmp://rtmpin.livestreamingest.com/rtmpin/${rtmpKey}`)
-  })
+  }));
+}
 
-};
-
-goLive('zmj-dxn-ajy-6g9?p=0')
+goLive('ndm-b43-jwd-6wg?p=0');
