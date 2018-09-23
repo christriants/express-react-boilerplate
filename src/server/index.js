@@ -19,7 +19,7 @@ const API_SECRET = 'HTuRddLgDjCZcnJdo0kvpYY9HOX9RCFA';
 const clientId = 8143;
 const timestamp = (new Date()).getTime();
 const apiToken = generateToken('readonly', timestamp);
-const offlineClip = 'guitar-solo.mp4';
+const offlineClip = 'surf.mp4';
 
 // Setup our routes
 app.get('/live', (request, response) => {
