@@ -28,7 +28,7 @@ app.get('/live', (request, response) => {
       const parsedData = JSON.parse(data);
       const { isLive } = parsedData;
       const stream = isLive ? `https://livestreamapis.com/v3/accounts/12963240/events/5037587/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}` : offlineClip;
-      console.log(`https://livestreamapis.com/v3/accounts/12963240/events/5037587/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`)
+      // console.log(`https://livestreamapis.com/v3/accounts/12963240/events/5037587/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`)
       response.json({
         liveStatus: isLive,
         stream,
@@ -36,7 +36,7 @@ app.get('/live', (request, response) => {
     });
 });
 
-// Calls livestream API to get .m3u
+// Calls livestream API to get .m3u8
 function getLiveStreamClip(livestreamToken) {
   const getReq = {
     headers: {
@@ -44,8 +44,8 @@ function getLiveStreamClip(livestreamToken) {
     },
   };
   const livestream = `https://livestreamapis.com/v3/accounts/12963240/events/5037587/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
-  console.log(livestream)
-  return fetch(livestream, getReq)
+  // console.log(livestream);
+  return fetch(livestream, getReq);
 }
 
 // Calls livestream API to get event status
@@ -67,21 +67,6 @@ function getLivestreamStatus(livestreamToken) {
       console.log(error);
     });
 }
-
-// Calls livestream API
-// const source = async function changeVideo() {
-//   const isEventLive = await getLivestream();
-//   if (isEventLive === true) {
-//     // window.document.getElementById('video').src = livestream;
-//     const livestream = `https://livestreamapis.com/v3/accounts/12963240/events/5037587/live.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
-//     console.log(livestream);
-//   } else {
-//     // document.getElementById('video').src = '';
-//     console.log('guitar-solo.mp4');
-//   }
-// };
-
-// source();
 
 // Helpers
 function generateToken(scope) {
