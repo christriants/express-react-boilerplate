@@ -7,7 +7,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      liveStatus: false,
       stream: null,
+      title: 'Checking live status...'
     };
   }
 
@@ -18,18 +20,23 @@ class App extends Component {
       })
       .then(response => {
         this.setState({
+          liveStatus: response.liveStatus,
           stream: response.stream,
+          title: `You are watching the following archived VOD: ${response.title}`,
         });
       });
   }
 
   render() {
 
-    const { stream } = this.state;
+    const { liveStatus, stream, title } = this.state;
+
+    const pageTitle = liveStatus ?  'We are live!': title
+    console.log(liveStatus, pageTitle)
 
     return (
       <main className="App" >
-        <h1>Chris' RTMP Player</h1>
+        <h1>{pageTitle}</h1>
         <video id="player" className="video-js" controls preload="auto" poster="livestream.jpg" data-setup="{}" loop>
           <source id='video' src={stream} type='video/mp4' />
           <p className="vjs-no-js">

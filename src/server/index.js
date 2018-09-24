@@ -19,22 +19,44 @@ const API_SECRET = 'HTuRddLgDjCZcnJdo0kvpYY9HOX9RCFA';
 const clientId = 8143;
 const timestamp = (new Date()).getTime();
 const apiToken = generateToken('readonly', timestamp);
-const offlineClip = 'surf.mp4';
+const offlineClip = `https://livestreamapis.com/v3/accounts/12963240/events/5037587/videos/169465950.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
 
 // Setup our routes
 app.get('/live', (request, response) => {
+  let responseData;
   getLivestreamStatus(apiToken)
     .then((data) => {
       const parsedData = JSON.parse(data);
       const { isLive } = parsedData;
       const stream = isLive ? `https://livestreamapis.com/v3/accounts/12963240/events/5037587/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}` : offlineClip;
-      // console.log(`https://livestreamapis.com/v3/accounts/12963240/events/5037587/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`)
-      response.json({
+      responseData = {
         liveStatus: isLive,
         stream,
-      });
+      };
+      return responseData;
+    })
+    .then((responseData) => {
+      getOfflineTitle(apiToken)
+        .then((data) => {
+          const parsedData = JSON.parse(data);
+          const { caption } = parsedData;
+          responseData.title = caption;
+          response.json(responseData);
+          // console.log(responseData)
+        });
     });
 });
+
+// app.get('/vod', (request, response) => {
+//   getOfflineTitle(apiToken)
+//     .then((data) => {
+//       const parsedData = JSON.parse(data);
+//       const { caption } = parsedData;
+//       response.json({
+//         title: caption,
+//       });
+//     });
+// });
 
 // Calls livestream API to get .m3u8
 function getLiveStreamClip(livestreamToken) {
@@ -48,6 +70,8 @@ function getLiveStreamClip(livestreamToken) {
   return fetch(livestream, getReq);
 }
 
+getLiveStreamClip()
+
 // Calls livestream API to get event status
 function getLivestreamStatus(livestreamToken) {
   const getReq = {
@@ -57,6 +81,27 @@ function getLivestreamStatus(livestreamToken) {
   };
   const livestreamEvent = `https://livestreamapis.com/v3/accounts/12963240/events/5037587?clientId=${clientId}&token=${livestreamToken}&timestamp=${timestamp}`;
   return fetch(livestreamEvent, getReq)
+    .then((data) => {
+      return data.text();
+    })
+    .then((textResponse) => {
+      return textResponse;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+// get offline video title
+
+function getOfflineTitle(livestreamToken) {
+  const getReq = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const offlineVid = `https://livestreamapis.com/v3/accounts/12963240/events/5037587/videos/169465950?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
+  return fetch(offlineVid, getReq)
     .then((data) => {
       return data.text();
     })

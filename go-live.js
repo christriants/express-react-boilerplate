@@ -1,5 +1,5 @@
 const ffmpeg = require('fluent-ffmpeg');
-const stream = ffmpeg('');
+const stream = ffmpeg('stream.mp4');
 
 function goLive(rtmpKey) {
   return new Promise(((resolve, reject) => {

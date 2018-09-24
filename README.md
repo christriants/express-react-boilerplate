@@ -46,3 +46,6 @@ If the event is not live, the video player source will match a local file in the
 
 I want to implement Firebase for thumbs up/thumbs down, depending on a particular stream.
 
+Add the ability to upload videos. 
+
+Allow for switching videos via API.
