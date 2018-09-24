@@ -1,12 +1,14 @@
-# Express React Boilerplate
+# My React App 
 
-This is a boilerplate express application using a React front end
+This is a simple React app that contains a player, and switches content for Live and offline.
+
+Please use Safari, with CORS restrictions turned off for full experience.
 
 ## Development Setup
 
 ```
-git clone https://github.com/kevinferri/express-react-boilerplate
-cd express-react-boilerplate
+git clone git@github.com:christriants/React-App-Final-Project.git
+cd React-App-Final-Project
 npm install
 npm start
 ```
@@ -19,23 +21,28 @@ Express server will be started at `http://localhost:3000/`
 npm run webpack
 ```
 
-## Tests
+## Stream
 
-This project uses [Jest](https://facebook.github.io/jest/) for testing.
-Tests are located in `/tests`.
-To run tests:
-
-```
-npm test
-```
-
-## Linter
-
-This project uses eslint and [Airbnb's styleguide](https://github.com/airbnb/javascript) for linting.
-To run linter:
+Add a video file into the React-App-Final-Project directory. 
+Require that file as the 'stream' variable in the go-live.js file.
 
 ```
-npm run lint
+node go-live.js
 ```
 
-If you are using atom, you can use the [eslint plugin](https://atom.io/packages/eslint) for live linting.
+Check the player, and it should now be streaming your local file.
+
+## What happens?
+
+Your file is being streamed to a RTMP server directed to an event on livestream.com.
+
+Using their public API, this app will determine whether or not the Livestream event is live.
+
+If the event is live, the video player source will switch to the Livestream HLS file, unlocked using three auth parameters.
+
+If the event is not live, the video player source will match a local file in the directory.
+
+## Future goals
+
+I want to implement Firebase for thumbs up/thumbs down, depending on a particular stream.
+
