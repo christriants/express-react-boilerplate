@@ -13,7 +13,10 @@ function goLive(rtmpKey) {
       .size('1920x1080')
       .on('error', reject)
       .on('end', resolve)
-      .save(`rtmp://rtmpin.livestreamingest.com/rtmpin/${rtmpKey}`);
+      .save(`rtmp://rtmpin.livestreamingest.com/rtmpin/${rtmpKey}`)
+      .on('end', function () {
+        console.log('Stream has ended')
+      });
   }));
 }
 
