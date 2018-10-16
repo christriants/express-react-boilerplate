@@ -15,8 +15,8 @@ const server = app.listen(port, () => {
 });
 
 // Values for the Livestream API
-const API_SECRET = 'HTuRddLgDjCZcnJdo0kvpYY9HOX9RCFA';
-const clientId = 8697;
+const API_SECRET = 'ceiaTwtT5vpR3NYQYtaekfpDNNPZuvv2';
+const clientId = 8471;
 const timestamp = (new Date()).getTime();
 const apiToken = generateToken('readonly', timestamp);
 const offlineClip = `https://livestreamapis.com/v3/accounts/27551527/events/8416517/videos/181920584.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
