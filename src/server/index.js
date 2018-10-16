@@ -16,10 +16,10 @@ const server = app.listen(port, () => {
 
 // Values for the Livestream API
 const API_SECRET = 'HTuRddLgDjCZcnJdo0kvpYY9HOX9RCFA';
-const clientId = 8143;
+const clientId = 8697;
 const timestamp = (new Date()).getTime();
 const apiToken = generateToken('readonly', timestamp);
-const offlineClip = `https://livestreamapis.com/v3/accounts/12963240/events/5037587/videos/169465950.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
+const offlineClip = `https://livestreamapis.com/v3/accounts/27551527/events/8416517/videos/181920584.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
 
 // Setup our routes
 app.get('/live', (request, response) => {
@@ -28,7 +28,7 @@ app.get('/live', (request, response) => {
     .then((data) => {
       const parsedData = JSON.parse(data);
       const { isLive } = parsedData;
-      const stream = isLive ? `https://livestreamapis.com/v3/accounts/12963240/events/5037587/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}` : offlineClip;
+      const stream = isLive ? `https://livestreamapis.com/v3/accounts/27551527/events/8416517/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}` : offlineClip;
       responseData = {
         liveStatus: isLive,
         stream,
@@ -65,7 +65,7 @@ function getLiveStreamClip(livestreamToken) {
       'Content-Type': 'application/json',
     },
   };
-  const livestream = `https://livestreamapis.com/v3/accounts/12963240/events/5037587/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
+  const livestream = `https://livestreamapis.com/v3/accounts/27551527/events/8416517/master.m3u8?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
   // console.log(livestream);
   return fetch(livestream, getReq);
 }
@@ -79,7 +79,7 @@ function getLivestreamStatus(livestreamToken) {
       'Content-Type': 'application/json',
     },
   };
-  const livestreamEvent = `https://livestreamapis.com/v3/accounts/12963240/events/5037587?clientId=${clientId}&token=${livestreamToken}&timestamp=${timestamp}`;
+  const livestreamEvent = `https://livestreamapis.com/v3/accounts/27551527/events/8416517?clientId=${clientId}&token=${livestreamToken}&timestamp=${timestamp}`;
   return fetch(livestreamEvent, getReq)
     .then((data) => {
       return data.text();
@@ -100,7 +100,7 @@ function getOfflineTitle(livestreamToken) {
       'Content-Type': 'application/json',
     },
   };
-  const offlineVid = `https://livestreamapis.com/v3/accounts/12963240/events/5037587/videos/169465950?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
+  const offlineVid = `https://livestreamapis.com/v3/accounts/27551527/events/8416517/videos/169465950?clientId=${clientId}&token=${apiToken}&timestamp=${timestamp}`;
   return fetch(offlineVid, getReq)
     .then((data) => {
       return data.text();

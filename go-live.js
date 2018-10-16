@@ -20,4 +20,4 @@ function goLive(rtmpKey) {
   }));
 }
 
-goLive('ndm-b43-jwd-6wg?p=0');
+goLive('p76-6rx-vjb-9mz?p=0');
